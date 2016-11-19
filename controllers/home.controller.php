@@ -108,8 +108,14 @@ class HomeController extends Controller {
         $this->data['tree'] = "";
         $this->build_tree(0,0);
 
-        // data news titles for categories tree TODO fill data
+        // data news titles for categories tree
         $this->data['news'] = $this->model->getNewsByCategory();
+
+        // data for advertising
+        $this->data['adv'] = $this->model->getAdvertising();
+        shuffle($this->data['adv']);
+        $this->data['adv_left'] = array_slice($this->data['adv'],0,4);
+        $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
 
@@ -122,7 +128,29 @@ class HomeController extends Controller {
      */
     public function admin_index()
     {
+        // data for OwlCarousel
+        $this->data['carousel'] = $this->model->getCarouselData();
 
+        // data for top 5 user with biggest amount of comments
+        $this->data['users'] = $this->model->getUsersLogins();
+
+        // data for top 3 topics with the most comments for previous day
+        $this->data['topics'] = $this->model->getTopThreeTopics();
+
+        // data for building categories tree TODONE fill data
+        $this->data['cat'] = $this->model->getCategoryTree();
+        $this->data['tree_news'] = $this->model->getNewsByCategory();
+        $this->data['tree'] = "";
+        $this->build_tree(0,0);
+
+        // data news titles for categories tree
+        $this->data['news'] = $this->model->getNewsByCategory();
+
+        // data for advertising
+        $this->data['adv'] = $this->model->getAdvertising();
+        shuffle($this->data['adv']);
+        $this->data['adv_left'] = array_slice($this->data['adv'],0,4);
+        $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
 
@@ -135,12 +163,34 @@ class HomeController extends Controller {
      */
     public function user_index()
     {
+        // data for OwlCarousel
+        $this->data['carousel'] = $this->model->getCarouselData();
 
+        // data for top 5 user with biggest amount of comments
+        $this->data['users'] = $this->model->getUsersLogins();
+
+        // data for top 3 topics with the most comments for previous day TODO fill top 3 topics data
+        $this->data['topics'] = $this->model->getTopThreeTopics();
+
+        // data for building categories tree TODONE fill data
+        $this->data['cat'] = $this->model->getCategoryTree();
+        $this->data['tree_news'] = $this->model->getNewsByCategory();
+        $this->data['tree'] = "";
+        $this->build_tree(0,0);
+
+        // data news titles for categories tree TODO fill data
+        $this->data['news'] = $this->model->getNewsByCategory();
+
+        // data for advertising
+        $this->data['adv'] = $this->model->getAdvertising();
+        shuffle($this->data['adv']);
+        $this->data['adv_left'] = array_slice($this->data['adv'],0,4);
+        $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
 
     // actions for moderators ====================
-    // index TODO
+    // index TODONE
 
     /**
      * home page for moderator /
@@ -148,6 +198,28 @@ class HomeController extends Controller {
      */
     public function moderator_index()
     {
+        // data for OwlCarousel
+        $this->data['carousel'] = $this->model->getCarouselData();
 
+        // data for top 5 user with biggest amount of comments
+        $this->data['users'] = $this->model->getUsersLogins();
+
+        // data for top 3 topics with the most comments for previous day
+        $this->data['topics'] = $this->model->getTopThreeTopics();
+
+        // data for building categories tree TODONE fill data
+        $this->data['cat'] = $this->model->getCategoryTree();
+        $this->data['tree_news'] = $this->model->getNewsByCategory();
+        $this->data['tree'] = "";
+        $this->build_tree(0,0);
+
+        // data news titles for categories tree
+        $this->data['news'] = $this->model->getNewsByCategory();
+
+        // data for advertising
+        $this->data['adv'] = $this->model->getAdvertising();
+        shuffle($this->data['adv']);
+        $this->data['adv_left'] = array_slice($this->data['adv'],0,4);
+        $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 }

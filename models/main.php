@@ -27,7 +27,15 @@ SELECT id, title
      */
     public function getUsersLogins()
     {
- 
+        $sql = "
+SELECT COUNT(comment.id) AS count_comments,comment.id_user,user.login 
+  FROM comment
+    LEFT JOIN user ON comment.id_user = user.id
+      GROUP BY comment.id_user
+        ORDER BY count_comments DESC
+          LIMIT 5
+";
+        return $this->db->query($sql);
     }
 
     /**
@@ -36,7 +44,17 @@ SELECT id, title
      */
     public function getTopThreeTopics()
     {
-
+        $sql = "
+SELECT news.id, news.title, COUNT(comment.id_news) AS count_com
+  FROM news 
+    LEFT JOIN comment ON news.id=comment.id_news 
+      WHERE MONTH(comment.create_date_time) = MONTH(CURRENT_DATE) 
+      AND YEAR(comment.create_date_time) = YEAR(CURRENT_DATE) 
+        GROUP BY news.id 
+          ORDER BY count_com 
+            DESC LIMIT 3
+";
+        return $this->db->query($sql);
     }
 
     /**
@@ -83,5 +101,14 @@ SELECT title,create_date_time,news.id AS id,category.id AS id_category
             $return = array_merge($return,$this->db->query($sql));
         }
         return $return;
+    }
+
+    /**
+     * generate data for 2 advertising blocks /
+     */
+    public function getAdvertising()
+    {
+        $sql = "SELECT * FROM advertising";
+        return $this->db->query($sql);
     }
 }

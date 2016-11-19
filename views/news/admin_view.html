@@ -1,0 +1,40 @@
+<div class="col-md-2">
+    <!--    button for adding pictures TODO button for adding pictures-->
+    <a href="/admin/news/edit/<?=$data['article']['id']?>">
+
+        <button class="btn btn-sm btn-success">Edit article</button>
+    </a>
+</div>
+
+<div class="col-md-8">
+    <div class="col-md-12">
+        <?php include_once '/news_parts/article_title.html'; ?>
+    </div>
+    <div class="col-md-12">
+        <?php include_once '/news_parts/article_pic_carousel.html'; ?>
+    </div>
+    <div class="col-md-12">
+        <?php include_once '/news_parts/article_text.html'; ?>
+    </div>
+    <div class="col-md-12">
+        <?php include_once '/news_parts/article_tags.html'; ?>
+        button for ading tags
+    </div>
+    <div class="col-md-12">
+        <!--TODO this-->
+        <div class="container">
+            how much reading total readers
+        </div>
+    </div>
+    <div class="col-md-12">
+        <!--container for comments TODO this-->
+        <div class="container">
+            comments
+        </div>
+
+    </div>
+</div>
+
+<div class="col-md-2">
+
+</div>
