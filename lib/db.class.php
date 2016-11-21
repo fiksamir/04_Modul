@@ -1,38 +1,51 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 18.10.2016
- * Time: 20:07
+ * class for connection to DB /
  */
-
-class DB {
+class DB{
     
     protected $connection;
-    
-    public function  __construct($host,$user,$password,$db_name)
+
+    /**
+     * DB constructor /
+     * @param $host
+     * @param $user
+     * @param $password
+     * @param $db_name
+     * @throws Exception
+     */
+    public function __construct($host, $user, $password, $db_name)
     {
-
         $this->connection = new mysqli($host, $user, $password, $db_name);
-
-        if (mysqli_connect_error()) {
-            throw new Exception('Could not connect to ' . $db_name . ' data base');
-        }
-    }
-    
-    public function query($sql) {
         
-        if (!$this->connection) {
+        if (mysqli_connect_error($this->connection)) {
+            throw new Exception('Could not connect to DB');
+        }
+        
+        // для русских символов
+        $this->connection->query("SET NAMES 'utf8'");
+        $this->connection->query("SET CHARACTER SET 'utf8'");
+        $this->connection->query("SET SESSION collation_connection = 'utf8_general_ci'");
+    }
+
+    /**
+     * @param $sql
+     * @return array|bool|mysqli_result data
+     * @throws Exception
+     */
+    public function query($sql) 
+    {
+        if(!$this->connection) {
             return false;
         }
         
         $result = $this->connection->query($sql);
         
-        if (mysqli_error($this->connection)) {
+        if(mysqli_error($this->connection)) {
             throw new Exception(mysqli_error($this->connection));
         }
         
-        if (is_bool($result)) {
+        if(is_bool($result)) {
             return $result;
         }
         
@@ -42,8 +55,15 @@ class DB {
         }
         return $data;
     }
-    
-    public function escape($str) {
-        return mysqli_escape_string($this->connection,$str);
+
+    /**
+     * for escaping sql injections /
+     * escapes special characters in a str /
+     * @param $str
+     * @return string
+     */
+    public function escape($str) 
+    {
+        return mysqli_escape_string($this->connection , $str);
     }
 }

@@ -4,7 +4,7 @@
  */
 
 class ContactController extends Controller{
-
+    
     public function __construct($data = array())
     {
         parent::__construct($data);
@@ -13,6 +13,12 @@ class ContactController extends Controller{
 
     public function index()
     {
+        // data for advertising
+        $this->data['adv'] = $this->model->getAdvertising();
+        shuffle($this->data['adv']);
+        $this->data['adv_left'] = array_slice($this->data['adv'],0,4);
+        $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
+        
         if ($_POST) {
             if ($this->model->save($_POST)) {
                 Session::setFlash('Thank you! Your message was sent successfully!');
@@ -21,9 +27,9 @@ class ContactController extends Controller{
             }
         }
     }
-
-    public function admin_index()
+    
+    public function admin_index() 
     {
-        $this->data = $this->model->getList();
+        $this->data['messages'] = $this->model->getList();
     }
 }

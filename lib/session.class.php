@@ -1,43 +1,54 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 19.10.2016
- * Time: 15:15
+ * basic class for showing flash massages adn session work /
+ * 1 message can be showed only ones /
  */
-
 class Session {
 
-    // cообщение каторое необходимо выдать
     protected static $flash_message;
 
     /**
-     * @param $message
+     * set flash message /
+     * @param $message /
      */
-    public static function  setFlash($message) {
+    public static function setFlash($message)
+    {
         self::$flash_message = $message;
     }
 
-    // проверка наличия сообщения
-    public static function hasFlash() {
+    /**
+     * @return bool /
+     * this function check is there any flash to show /
+     */
+    public static function hasFlash()
+    {
         return !is_null(self::$flash_message);
     }
 
-    // вывести текущее сообщеие и очистить его
-    public static function flash(){
+    /**
+     * this function shows flash and deletes it /
+     */
+    public static function flash()
+    {
         echo self::$flash_message;
         self::$flash_message = null;
     }
     
-    public static function set($key, $value) {
-        $_SESSION[$key]=$value;
+    public static function set($key, $value) 
+    {
+        $_SESSION[$key] = $value;
     }
     
-    public static function get($key) {
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+    public static function get($key)
+    {
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+        return null;
     }
     
-    public static function delete($key) {
+    public static function delete($key) 
+    {
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
         }
@@ -46,5 +57,4 @@ class Session {
     public static function destroy() {
         session_destroy();
     }
-
 }

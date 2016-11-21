@@ -1,16 +1,18 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 19.10.2016
- * Time: 14:35
+ * basic class for models /
+ * has only constructor witch transfer App::$db to $this->db /
  */
-
 class Model {
     
     protected $db;
     
-    public function __construct() {
+    /**
+     * Model constructor /
+     * fill db from App::db
+     */
+    public function __construct()
+    {
         $this->db = App::$db;
     }
 }

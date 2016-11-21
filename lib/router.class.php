@@ -1,25 +1,96 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 05.10.2016
- * Time: 1:36
+ * отвечает за парсинг запросов, его задача получить контроллер метод url и другие его части /
+ * protected $uri /
+ * protected $controller / 
+ * protected $action /
+ * protected $params /
+ * protected $router / 
+ * protected $method_prefix / 
+ * protected $language /
  */
-class Router{
-    
+class Router {
+
     protected $uri;
+
     protected $controller;
+
     protected $action;
+
+    // Массив параметров
     protected $params;
-    
-    protected $route;
+
+    protected $router;
+
     protected $method_prefix;
+
     protected $language;
 
     /**
-     * @return mixed
+     * на входе он получает uri который попадает перебросом в index.php /
+     * @param $uri
      */
-    public function getUri()
+    public function __construct($uri) 
+    {
+        // trim нужен для обрезания / в конце и в начале uri
+        // urldecode нужен для правильной обработки закодированных символов
+        $this->uri = urldecode(trim($uri,'/'));
+
+        $routes = Config::get('routes');
+
+        // Получаем значения по-умолчанию
+        $this->router        = Config::get('default_router');
+        $this->method_prefix = Config::get('default_prefix');
+        $this->language      = Config::get('default_language');
+        $this->controller    = Config::get('default_controller');
+        $this->action        = Config::get('default_action');
+
+        // Сохраняем переданные методом get параметры
+        $uri_parts = explode('?', $this->uri);
+
+        // Get path like /lng/controller/action/param1/param2/ .. / .. / ..
+        $path = $uri_parts[0];
+        $path_parts = explode('/',$path);
+
+        //echo "<pre>" ;
+        //print_r($path_parts);
+
+        if (count($path_parts)) {
+
+            // Get route or language at first element
+            if (in_array( strtolower(current($path_parts)) , array_keys($routes))) {
+
+                // Если задан route то перезаписываем значения по умолчанию route и приставку для всех методов
+                $this->router = strtolower(current($path_parts));
+                $this->method_prefix = isset($routes[$this->router]) ? $routes[$this->router] : '';
+                array_shift($path_parts);
+            } elseif (in_array( strtolower(current($path_parts)) , Config::get('languages'))) {
+
+                $this->language = strtolower(current($path_parts));
+                array_shift($path_parts);
+            }
+
+            // Get next element это может быть только controller
+            if (current($path_parts)) {
+                $this->controller = strtolower(current($path_parts));
+                array_shift($path_parts);
+            }
+
+            // Get next element это может быть только action
+            if (current($path_parts)) {
+                $this->action = strtolower(current($path_parts));
+                array_shift($path_parts);
+            }
+            
+            // Если еще остались элементы в массиве path_parts то могут быть только параметры
+            $this->params = $path_parts;
+        }
+    }
+
+    /**
+     * @return mixed 
+     */
+    public function getUri() 
     {
         return $this->uri;
     }
@@ -27,7 +98,7 @@ class Router{
     /**
      * @return mixed
      */
-    public function getController()
+    public function getController() 
     {
         return $this->controller;
     }
@@ -43,17 +114,17 @@ class Router{
     /**
      * @return mixed
      */
-    public function getParams()
+    public function getParams() 
     {
         return $this->params;
     }
-    
+
     /**
-     * @return mixed
+     * @return mixed 
      */
-    public function getRoute()
+    public function getRouter()
     {
-        return $this->route;
+        return $this->router;
     }
 
     /**
@@ -72,58 +143,12 @@ class Router{
         return $this->language;
     }
 
-    public function __construct($uri)
+    /**
+     * simple redirection to location /
+     * @param $location 
+     */
+    public static function redirect($location)
     {
-        $this->uri = urldecode(trim($uri, '/'));
-
-        // Get defaults settings
-        $routes = Config::get('routes');
-        $this->route = Config::get('default_route');
-        $this->method_prefix = isset($routes[$this->route]) ? $routes[$this->route] : '';
-        $this->language = Config::get('default_language');
-        $this->controller = Config::get('default_controller');
-        $this->action = Config::get('default_action');
-
-        // отбрасываем все что передали методами get and post
-        $uri_path = explode('?',$this->uri);
-        
-        // Get path like /(route or lng)/controller/action/param1/param2
-        $path = $uri_path[0];
-
-        $path_parts = explode('/', $path);
-        // echo "<pre>"; print_r($path_parts);
-
-        if (count($path_parts) > 3) {
-            // echo count($path_parts);
-            array_shift($path_parts);
-            array_shift($path_parts);
-            array_shift($path_parts);
-            // Get routes or language at first element
-            if (in_array(strtolower(current($path_parts)), array_keys($routes))) {
-                $this->route = strtolower(current($path_parts));
-                $this->method_prefix = isset($routes[$this->route]) ? $routes[$this->route] : '';
-                array_shift($path_parts);
-            } elseif (in_array(strtolower(current($path_parts)), Config::get('languages'))) {
-                $this->language = strtolower(current($path_parts));
-                array_shift($path_parts);
-            }
-            // Get controller - next element of array
-            if (current($path_parts)) {
-                $this->controller = strtolower(current($path_parts));
-                array_shift($path_parts);
-            }
-            // Get action - next element of array
-            if (current($path_parts)) {
-                $this->action = strtolower(current($path_parts));
-                array_shift($path_parts);
-            }
-            // Get parameters - all the rest elements of array
-            $this->params = $path_parts;
-        }
+        header("Location: $location");
     }
-    
-    public static function redirect($location) {
-        header("Location:$location");
-    } 
-
 }

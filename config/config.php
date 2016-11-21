@@ -34,7 +34,7 @@ Config::set('default_router'    ,'default');
 Config::set('default_language'  ,'rus');
 // Config::set('default_controller','news'); TODONE change default controller 
 Config::set('default_controller','home');
-Config::set('default_action'    ,'index');
+Config::set('default_action'    ,'index'); 
 
 // DataBase config
 Config::set('db.host'    ,'localhost');

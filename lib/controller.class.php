@@ -1,15 +1,32 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 05.10.2016
- * Time: 16:07
+ * Basic class for all controllers /
+ * All data we give from the controller to the view /
+ * protected $data /
+ * For access to model object
+ * protected $model /
+ * Parameters from request line
+ * protected $params /
  */
-
 class Controller {
+    // All data we give from the controller to the view
     protected $data;
+
+    // For access to model object
     protected $model;
+
+    // Parameters from request line
     protected $params;
+
+    /**
+     * Controller constructor.
+     * @param array $data
+     */
+    public function __construct($data = array()) 
+    {
+        $this->data = $data;
+        $this->params = App::getRouter()->getParams();
+    }
 
     /**
      * @return mixed
@@ -32,12 +49,6 @@ class Controller {
      */
     public function getParams()
     {
-        return $this->parents;
-    }
-    
-    public function __construct($data = array())
-    {
-        $this->data = $data;
-        $this->params = App::getRouter()->getParams();
+        return $this->params;
     }
 }

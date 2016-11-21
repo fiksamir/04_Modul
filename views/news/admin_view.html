@@ -1,3 +1,12 @@
+<script>
+    var time_one = setInterval(function() {
+        var o = 0;
+        if (!o || Math.random() > 0.5) o = 1 + Math.floor(Math.random() * 5);
+        $('.reading_now').text(""+o);
+    },5000)
+    $(document).ready(time_one)
+</script>
+
 <div class="col-md-2">
     <!--    button for adding pictures TODO button for adding pictures-->
     <a href="/admin/news/edit/<?=$data['article']['id']?>">
@@ -21,17 +30,19 @@
         button for ading tags
     </div>
     <div class="col-md-12">
-        <!--TODO this-->
-        <div class="container">
-            how much reading total readers
+        <div class="col-md-2">
+            <?php include_once VIEWS_PATH.DS.'requests'.DS.'all_readers.html'?>
+        </div>
+        <div class="col-md-8">
+
+        </div>
+        <div class="col-md-2">
+            Reading now <b class="reading_now"> 0 </b>
         </div>
     </div>
     <div class="col-md-12">
-        <!--container for comments TODO this-->
-        <div class="container">
-            comments
-        </div>
-
+        <?php include_once VIEWS_PATH.DS."requests".DS."add_plus_minus.html"?>
+        <?php include_once '/news_parts/article_comments.html';?>
     </div>
 </div>
 

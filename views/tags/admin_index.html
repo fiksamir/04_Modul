@@ -1,0 +1,26 @@
+<div class="col-md-2">
+    <div class="col-md-12">
+
+        <a href="/admin/tags/">
+
+            <button class="btn btn-sm btn-success">New tag</button>
+        </a>
+        </br></br>
+    </div>
+</div>
+
+<div class="col-md-8">
+
+    <div class="col-md-12">
+        <b>
+        <?php foreach ($data['tags'] as $tag) { ?>
+            <a href="/admin/tags/view/<?= $tag['id'] ?>"><?= $tag['name'] ?></a> &ensp;
+        <?php } ?>
+        </b>
+    </div>
+
+</div>
+
+<div class="col-md-2">
+
+</div>

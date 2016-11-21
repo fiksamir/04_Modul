@@ -1,19 +1,30 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 05.10.2016
- * Time: 1:31
+ * class for setting and getting app settings /
  */
-
 class Config {
+
     protected static $settings = array();
-    
-    public static function get($key) {
-        return isset(self::$settings[$key]) ? self::$settings[$key] : NULL;
+
+    /**
+     * from Config class (global app settings) /
+     * @param $key
+     * @return mixed|null $setting[key] 
+     */
+    public static function get($key)
+    {
+        return isset(self::$settings[$key]) ? self::$settings[$key] : null;
     }
-    
-    public static function set($key, $value) {
+
+    /**
+     * initial global setting /
+     * @param $key
+     * @param $value
+     * @internal param array $settings to Config class (global app settings)
+     */
+    public static function set($key, $value)
+    {
         self::$settings[$key] = $value;
     }
+
 }

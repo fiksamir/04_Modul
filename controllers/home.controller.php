@@ -83,11 +83,11 @@ class HomeController extends Controller {
             }
         }
     }
-
-
+    
+    
     // actions for all visitors ====================
     // index TODONE
-
+    
     /**
      * default action for home controller and for home page /
      */
@@ -95,13 +95,13 @@ class HomeController extends Controller {
     {
         // data for OwlCarousel
         $this->data['carousel'] = $this->model->getCarouselData();
-
+        
         // data for top 5 user with biggest amount of comments
-        $this->data['users'] = $this->model->getUsersLogins();
-
+        $this->data['users'] = $this->model->getUsersLogins(); 
+        
         // data for top 3 topics with the most comments for previous day
         $this->data['topics'] = $this->model->getTopThreeTopics();
-
+        
         // data for building categories tree TODONE fill data
         $this->data['cat'] = $this->model->getCategoryTree();
         $this->data['tree_news'] = $this->model->getNewsByCategory();
@@ -118,7 +118,7 @@ class HomeController extends Controller {
         $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
-
+    
     // actions for administrators ====================
     // index TODONE
 
@@ -153,7 +153,7 @@ class HomeController extends Controller {
         $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
-
+    
     // actions for login users ====================
     //index TODONE
 
@@ -169,7 +169,7 @@ class HomeController extends Controller {
         // data for top 5 user with biggest amount of comments
         $this->data['users'] = $this->model->getUsersLogins();
 
-        // data for top 3 topics with the most comments for previous day TODO fill top 3 topics data
+        // data for top 3 topics with the most comments for previous day TODONE fill top 3 topics data
         $this->data['topics'] = $this->model->getTopThreeTopics();
 
         // data for building categories tree TODONE fill data
@@ -178,7 +178,7 @@ class HomeController extends Controller {
         $this->data['tree'] = "";
         $this->build_tree(0,0);
 
-        // data news titles for categories tree TODO fill data
+        // data news titles for categories tree TODONE fill data
         $this->data['news'] = $this->model->getNewsByCategory();
 
         // data for advertising
@@ -188,10 +188,10 @@ class HomeController extends Controller {
         $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
-
+    
     // actions for moderators ====================
     // index TODONE
-
+    
     /**
      * home page for moderator /
      * same as for everyone /

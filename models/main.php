@@ -61,7 +61,7 @@ SELECT news.id, news.title, COUNT(comment.id_news) AS count_com
      * generate array for categories tree /
      * @return array
      */
-    public function getCategoryTree()
+    public function getCategoryTree() 
     {
         $sql = "
 SELECT * 
@@ -79,12 +79,12 @@ SELECT *
      * query for news sorted by categories /
      * @return mixed
      */
-    public function getNewsByCategory()
+    public function getNewsByCategory() 
     {
         $sql_categories = "SELECT * FROM category"; // select all categories
         $categories = $this->db->query($sql_categories);
         $return = array();
-
+        
         /*
          * for each category select latest 5 news
          */

@@ -1,0 +1,28 @@
+<div class="col-md-2">
+
+</div>
+
+<div class="col-md-8">
+    <form method="post">
+
+        <input type="text" placeholder="Put category name">
+        <select name="id_parent">
+
+            <?php
+            foreach ($data['parents-category'] as $parent) { ?>
+                <option value="<?= $parent['id'] ?>">
+                    <?= $parent['name'] ?>
+                </option>
+            <?php } ?>
+            <option value="0" selected>
+                Выбери родительскую категорию
+            </option>
+        </select>
+
+        <input type="submit" class="btn btn-success" value="Create"/>
+    </form>
+</div>
+
+<div class="col-md-2">
+
+</div>
