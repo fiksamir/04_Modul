@@ -19,8 +19,9 @@ switch(App::getRouter()->getMethodPrefix())
     <?php
     break;
 
-  case '':?>
+  case '':
 
+      if ($data['article']['analytical'] == 1) {?>
       <div class="container">
         <?php
         $article_text = explode(". ",$data['article']['text']);
@@ -30,7 +31,12 @@ switch(App::getRouter()->getMethodPrefix())
         echo "<span><a href='/users/login/'> Sorry! Only registered users can watch analytical articles </a><span>";
         ?>
       </div>
-    <?php
+      <?php } else { ?>
+          <div class="container">
+
+          <span><?=$data['article']['text']?></span>
+          </div>
+      <?php }
     break;
   default:
     break;

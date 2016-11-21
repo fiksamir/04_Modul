@@ -64,6 +64,6 @@ class DB{
      */
     public function escape($str) 
     {
-        return mysqli_escape_string($this->connection , $str);
+        return mysqli_real_escape_string($this->connection , $str);
     }
 }

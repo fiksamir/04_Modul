@@ -127,6 +127,25 @@ SELECT *
     {
         $id = $this->db->escape($id);
         $sql = "
+SELECT * FROM news
+  LEFT JOIN news_tag ON news.id = news_tag.id_news
+  LEFT JOIN tag ON news_tag.id_tag = tag.id
+    WHERE news.id = '{$id}'
+      ORDER BY tag.name DESC
+";
+        $result = $this->db->query($sql);
+        return $result;
+    }
+
+    /**
+     * query for getting all tag for 1 article
+     * @param $id
+     * @return mixed
+     */
+    public function getArticleTagLine($id)
+    {
+        $id = $this->db->escape($id);
+        $sql = "
 SELECT * FROM tag
   JOIN news_tag ON tag.id = news_tag.id_tag
     WHERE news_tag.id_news = '{$id}'
@@ -222,10 +241,59 @@ UPDATE news
     /**
      * editing article /
      * @param array $data
+     * @return bool
      */
     public function saveEditedArticle($data = array())
     {
-        
+//        print_r($data);
+
+        $id = $this->db->escape($data['id']);
+        $title = $this->db->escape($data['title']);
+        $text = $this->db->escape($data['text']);
+        $id_category = $this->db->escape($data['category']);
+        $tag = explode(";",$this->db->escape($data['tag']));
+        $analytic = (key_exists('analytical',$data)) ? 1:0;
+
+////        print_r($id);
+//        print_r($title);
+//        print_r($text);
+
+
+
+        $sql_edit_news = "
+UPDATE news 
+  SET title='{$title}',text='{$text}',analytical='{$analytic}'
+    WHERE news.id = '{$id}'
+";
+        $this->db->query($sql_edit_news);
+
+        $sql_edit_category = "
+UPDATE news_category
+  SET id_category = '{$id_category}'
+    WHERE id_news = '{$id}'
+";
+        $this->db->query($sql_edit_category);
+
+        foreach ($tag as $one_tag) {
+
+            $new_tag = $this->db->query("SELECT * FROM tag WHERE tag.name = '{$one_tag}'");
+            if (empty($new_tag)){
+                $this->db->query("INSERT INTO tag (name) VALUE ('{$one_tag}')");
+                $id_tag = $this->db->query("SELECT * FROM tag ORDER BY id DESC LIMIT 1");
+                $this->db->query("INSERT INTO news_tag (id_tag,id_news) VALUE ('{$id_tag[0]['id']}','{$id}')");
+            } else {
+                $id_tag = $this->db->query("SELECT * FROM tag WHERE name='{$one_tag}'");
+                $have_tag = $this->db->query("
+SELECT *
+  FROM tag
+    JOIN news_tag ON tag.id = news_tag.id_tag
+      WHERE id_news='{$id}' AND id_tag='{$id_tag[0]['id']}'");
+                if(!isset($have_tag[0])) {
+                    $this->db->query("INSERT INTO news_tag (id_tag,id_news) VALUE ('{$id_tag[0]['id']}','{$id}')");
+                }
+            }
+        }
+        return true;
     }
 
     /**

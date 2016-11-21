@@ -42,7 +42,7 @@
                   > - <?= $comment['minus'] ?> </b>
                 </p>
                 <cite><a href="<?= $role ?>/news/view/<?= $comment['id_news'] ?>"> Go to news </a></cite>
-                <cite><a href="<?= $role ?>/users/view/<?= $comment['id_user'] ?>"><?= $data['user'][0]['login'] ?></a></cite>
+                <cite><a href="<?= $role ?>/users/view/<?= $comment['id_user'] ?>">Author</a></cite>
               </small>
             </blockquote>
           </div>
@@ -80,7 +80,7 @@
                     </p>
                     <cite><a href="<?= $role ?>/news/view/<?= $answer['id_news'] ?>"> Go to news </a></cite>
                     <cite><a
-                          href="<?= $role ?>/users/view/<?= $comment['id_user'] ?>"><?= $data['user'][0]['login'] ?></a></cite>
+                          href="<?= $role ?>/users/view/<?= $comment['id_user'] ?>">Author</a></cite>
                   </small>
                 </blockquote>
               </div>

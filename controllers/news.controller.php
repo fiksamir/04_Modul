@@ -247,14 +247,15 @@ class NewsController extends Controller {
     public function admin_edit()
     {
         $params = App::getRouter()->getParams();
-        
+
+//        echo"<pre>";
 //        print_r($_POST);
 //        die;
 
         if (isset($params[0])) {
             $id = strtolower($params[0]);
             $this->data['article'] = $this->model->getByID($id);
-            $this->data['art-tags'] = $this->model->getArticleTags($id);
+            $this->data['art-tags'] = $this->model->getArticleTagLine($id);
             $this->data['art_category'] = $this->model->getArticleCategory($id);
             $this->data['all-categories'] = $this->model->getAllCategories();
 
