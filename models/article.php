@@ -127,14 +127,61 @@ SELECT *
     {
         $id = $this->db->escape($id);
         $sql = "
-SELECT * FROM news
-  LEFT JOIN news_tag ON news.id = news_tag.id_news
-  LEFT JOIN tag ON news_tag.id_tag = tag.id
-    WHERE news.id = '{$id}'
+SELECT * FROM tag
+  JOIN news_tag ON tag.id = news_tag.id_tag
+    WHERE news_tag.id_news = '{$id}'
       ORDER BY tag.name DESC
 ";
         $result = $this->db->query($sql);
+        $return = '';
+        foreach ($result as $item) {
+            $return .= $item['name'].";";
+        }
+        return $return;
+    }
+
+    /**
+     * query for getting category for 1 article
+     * @param $id
+     * @return mixed
+     */
+    public function getArticleCategory($id)
+        
+    {
+        $id = $this->db->escape($id);
+        $sql = "
+SELECT *
+    FROM news
+      JOIN news_category ON news.id = news_category.id_news
+      JOIN category ON news_category.id_category = category.id
+      WHERE news.id = '{$id}' LIMIT 1
+";
+        $result = $this->db->query($sql);
         return $result;
+    }
+    
+    public function getAllCategories() 
+    {
+        $categories = array();
+        $sql = "
+SELECT * 
+  FROM category
+";
+        $result = $this->db->query($sql);
+        foreach($result as $category) {
+            if ($category['id_parent'] == 0) {
+                $category['level'] = 1;
+                $categories[] = $category;
+                foreach ($result as $ch_category) {
+                    if ($ch_category['id_parent'] == $category['id']) {
+                        $ch_category['level'] = 2;
+                        $categories[] = $ch_category;
+                    }
+                }
+            }
+        }
+        
+        return $categories;
     }
 
     /**
@@ -143,7 +190,7 @@ SELECT * FROM news
      * @param bool $id
      * @return mixed
      */
-    public function save($data, $id = false)
+    public function saveArticle($data, $id = false)
     {
         $id = (int)$id; // id need if we want to edit 
         
@@ -170,6 +217,15 @@ UPDATE news
         }
 
         return $this->db->query($sql);
+    }
+
+    /**
+     * editing article /
+     * @param array $data
+     */
+    public function saveEditedArticle($data = array())
+    {
+        
     }
 
     /**

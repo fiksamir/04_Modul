@@ -79,6 +79,10 @@ class TagsController extends Controller {
     public function admin_index()
     {
         $this->data['tags'] = $this->model->getList();
+
+        if ($_POST) {
+            $this->model->createTag($_POST['tag_name']);
+        }
     }
 
     /**

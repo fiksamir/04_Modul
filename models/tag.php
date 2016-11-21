@@ -63,6 +63,15 @@ SELECT *
         return $this->db->query($sql);
     }
 
+    public function createTag($tag_name)
+    {
+        $name = $this->db->escape($tag_name);
+        $sql = "
+INSERT INTO tag (name) 
+  VALUES ('{$name}')
+";
+        $this->db->query($sql);
+    }
         
     
     

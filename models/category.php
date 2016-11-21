@@ -96,10 +96,6 @@ SELECT title,create_date_time,news.id AS id,categories.id AS id_category
         return $this->db->query($sql);
     }
     
-    public function addCategory() 
-    {
-        
-    }
 
     /**
      * return al parents categories
@@ -114,17 +110,14 @@ SELECT *
         return $this->db->query($sql);
     }
     
-    public function createCategory($id_parent) 
+    public function createCategory($id_parent,$cat_name)
     {
-        $id = $this->db->escape($id);
+        $id = $this->db->escape($id_parent);
+        $name = $this->db->escape($cat_name);
         $sql = "
-SELECT * 
-  FROM news 
-    LEFT JOIN news_category ON news.id = news_category.id_news
-      WHERE news_category.id_category = '{$id}'
-        ORDER BY news.create_date_time DESC
+INSERT INTO category(id_parent,name) 
+  VALUES ('{$id}','{$name}')
 ";
-        $result = $this->db->query($sql);
-        return $result;
+        $this->db->query($sql);
     }
 }

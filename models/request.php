@@ -129,17 +129,16 @@ SELECT *
             $role = (empty(Session::get('role')) ? "" : "/" . Session::get('role'));
             if (!empty($result)) {
 
-                echo'<li><a href="'.$role.'/categories/">All</a>';
-                echo'<li class="divider"></li>';
+                echo'<li><a href="'.$role.'/categories/">All</a></li>';
+                echo '<li class="divider"></li>';
 
                 foreach ($result as $row) {
-
                     if ($row['id_parent'] == 0) {
                         echo '<li class="dropdown-submenu"><a tabindex="-1" href="'.$role.'/categories/view/'.$row['id'].'">'. $row['name'].'</a>
                               <ul class="dropdown-menu">';
                         foreach ($result as $row_level_2) {
                             if ($row_level_2['id_parent'] == $row['id']) {
-                                echo '<li><a href="'.$role.'/categories/view/'.$row_level_2['id'].'">'. $row_level_2['name'].'</a></li>';
+                                echo '<li ><a href="'.$role.'/categories/view/'.$row_level_2['id'].'">'. $row_level_2['name'].'</a></li>';
                             }
                         }
                         echo '</ul>';
@@ -147,6 +146,7 @@ SELECT *
                         echo '<li class="divider"></li>';
                     }
                 }
+
             }
             exit;
         }

@@ -201,14 +201,14 @@ class NewsController extends Controller {
     }
 
     /**
-     * TODO redact this action
+     * Tadding news /
      */
     public function admin_add()
     {
         if ($_POST) {
             if (!empty($_POST['title']) && !empty($_POST['text'])) {
 
-                $result = $this->model->save($_POST); // save to mySQL
+                $result = $this->model->saveArticle($_POST); // save to mySQL
 
                 $id = $this->model->getID(); // name of the folder
                 mkdir(ROOT.DS."webroot".DS."uploads".DS.$id); // create folder
@@ -242,36 +242,32 @@ class NewsController extends Controller {
     }
 
     /**
-     * TODO redact this action
+     * edit one news /
      */
     public function admin_edit()
     {
-        // TODO only add photos
         $params = App::getRouter()->getParams();
+        
+//        print_r($_POST);
+//        die;
 
         if (isset($params[0])) {
             $id = strtolower($params[0]);
             $this->data['article'] = $this->model->getByID($id);
+            $this->data['art-tags'] = $this->model->getArticleTags($id);
+            $this->data['art_category'] = $this->model->getArticleCategory($id);
+            $this->data['all-categories'] = $this->model->getAllCategories();
 
             $this->getCarouselData($id);
         }
         
         if ( $_POST ) {
-            $id = isset($_POST['id']) ? $_POST['id'] : null;
-            $result = $this->model->save($_POST,$id);
+            $result = $this->model->saveEditedArticle($_POST);
             if ($result) {
                 Session::setFlash('article was saved');
             } else {
                 Session::setFlash('Error');
             }
-            Router::redirect('/admin/news/');
-        }
-
-        if (isset($this->params[0])) {
-            $this->data['article'] = $this->model->getByID($this->params[0]);
-        } else {
-            Session::setFlash('Wrong article id');
-            Router::redirect('/admin/news/');
         }
     }
 

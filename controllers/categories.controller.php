@@ -118,6 +118,11 @@ Class CategoriesController extends Controller {
         $this->data['cat'] = $this->model->getCategoryTree();
         $this->data['tree'] = "";
         $this->build_tree(0,0);
+
+        if ($_POST) {
+            $this->model->createCategory($_POST['id_parent'],$_POST['category_name']);
+        }
+        $this->data['parents-category'] = $this->model->getParentsCategories();
     }
 
     /**
@@ -150,23 +155,18 @@ Class CategoriesController extends Controller {
         $this->data['last_pag'] = (int)(count($this->data['category_news'])/5)-1;
     }
 
-    /**
-     * to add category /
-     * params can set id of category and id of page for pagination /
-     */
-    public function admin_add()
-    {
-        if ($_POST) {
-            echo "<pre>";
-            print_r($_POST);
-            die;
+//    /**
+//     * to add category /
+//     * params can set id of category and id of page for pagination /
+//     */
+//    public function admin_add()
+//    {
+//        if ($_POST) {
+//            $this->model->createCategory($_POST['id_parent'],$_POST['category_name']);
+//        }
+//        $this->data['parents-category'] = $this->model->getParentsCategories();
+//    }
 
-            $this->model->createCategory($_POST['id_parent']);
-        }
-        $this->data['parents-category'] = $this->model->getParentsCategories();
-    }
-
-    
     // actions for login users ====================
 
     public function user_index()
