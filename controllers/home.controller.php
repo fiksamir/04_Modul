@@ -153,6 +153,57 @@ class HomeController extends Controller {
         $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
 
+    /**
+     * for adding bgi, adv blocks, color of nav /
+     */
+    public function admin_add()
+    {
+        if(isset($_POST['firm'])) {
+            $this->model->saveAdvBlock($_POST);
+
+            $last_adv = $this->model->getAdvBlockId(); // name of the folder
+            $id = $last_adv[0]['id'];
+            mkdir(ROOT.DS."webroot".DS."img".DS."adv".DS.$id); // create folder
+
+            $dir_name = ROOT.DS."webroot".DS."img".DS."adv".DS.$id.DS;
+
+            if ($_FILES) {
+                foreach ($_FILES['image']['error'] as $key => $error) {
+
+                    if ($error == UPLOAD_ERR_OK) {
+
+                        $temp_file_name = $_FILES['image']['tmp_name'][$key];
+                        $file_name = $dir_name . "adv".$id.".jpg";
+                        move_uploaded_file($temp_file_name, $file_name);
+                    }
+                }
+            }
+        }
+        if(isset($_POST['bgi'])) {
+            $dir_name = ROOT . DS . "webroot" . DS . "img" . DS . "bgi" . DS;
+            $files = glob($dir_name."*");
+            if (count($files) > 0) {
+                foreach ($files as $file) {
+                    if (file_exists($file)) {
+                        unlink($file);
+                    }
+                }
+            }
+            if ($_FILES) {
+                if ($_FILES['image']['error'] == UPLOAD_ERR_OK) {
+                    $temp_file_name = $_FILES['image']['tmp_name'];
+                    $file_name = $dir_name . "Background.jpg";
+                    move_uploaded_file($temp_file_name, $file_name);
+                }
+
+            }
+
+        }
+        if(isset($_POST['color'])) {
+            $this->model->setColor($_POST['color']);
+        }
+    }
+
     
     // actions for login users ====================
     //index TODONE

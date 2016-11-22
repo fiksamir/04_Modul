@@ -1,10 +1,9 @@
-<?php
-  $role = (empty(Session::get('role')) ? "" : "/" . Session::get('role')); ?>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
 
-  <div class="col-md-10">
-
+<nav class="navbar navbar-inverse navbar-fixed-top" >
+    <?php $role = (empty(Session::get('role')) ? " " : "/" . Session::get('role')); ?>
+    <div class="col-md-10 maincolor" style="background-color: #000000; width:100%">
+    <?php include_once VIEWS_PATH.DS."requests".DS."header_color.html" ?>
     <div class="navbar-header">
 
       <a class="navbar-brand" href="<?=$role?>/"> <?=Config::get('site_name') . "-" . Session::get('login')?></a>
@@ -28,14 +27,14 @@
   {
     case 'admin_': ?>
 
-      <li <?php if(App::getRouter()->getController() == 'contact')    {?> class="active" <?php }?> > <a href="/admin/news/analytical/">  ANALYTICAL </a></li>
+      <li <?php if(App::getRouter()->getController() == 'news')       {?> class="active" <?php }?> > <a href="/admin/news/analytical/">  ANALYTICAL </a></li>
       <li <?php if(App::getRouter()->getController() == 'contact')    {?> class="active" <?php }?> > <a href="/admin/contact/comments/"> COMMENTS   </a></li>
       <li <?php if(App::getRouter()->getController() == 'contact')    {?> class="active" <?php }?> > <a href="/admin/contact/">          CONTACTS   </a></li>
-      <li <?php if(App::getRouter()->getController() == 'login')      {?> class="active" <?php }?> > <a href="/users/logout/">           LOG OUT    </a></li>
+      <li <?php if(App::getRouter()->getController() == 'logout')     {?> class="active" <?php }?> > <a href="/users/logout/">           LOG OUT    </a></li>
       <?php break;
 
     case 'user_': ?>
-      <li <?php if(App::getRouter()->getController() == 'login')      {?> class="active" <?php }?> > <a href="/user/news/analytical/"> ANALYTICAL </a></li>
+      <li <?php if(App::getRouter()->getController() == 'news')       {?> class="active" <?php }?> > <a href="/user/news/analytical/"> ANALYTICAL </a></li>
       <li <?php if(App::getRouter()->getController() == 'login')      {?> class="active" <?php }?> > <a href="/users/logout/">         LOG OUT    </a></li>
       <?php break;
 

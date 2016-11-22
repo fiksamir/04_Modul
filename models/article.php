@@ -245,34 +245,39 @@ UPDATE news
      */
     public function saveEditedArticle($data = array())
     {
-//        print_r($data);
 
         $id = $this->db->escape($data['id']);
         $title = $this->db->escape($data['title']);
         $text = $this->db->escape($data['text']);
         $id_category = $this->db->escape($data['category']);
+
         $tag = explode(";",$this->db->escape($data['tag']));
         $analytic = (key_exists('analytical',$data)) ? 1:0;
-
-////        print_r($id);
-//        print_r($title);
-//        print_r($text);
-
-
 
         $sql_edit_news = "
 UPDATE news 
   SET title='{$title}',text='{$text}',analytical='{$analytic}'
     WHERE news.id = '{$id}'
 ";
+
         $this->db->query($sql_edit_news);
 
-        $sql_edit_category = "
+        $have_category = $this->db->query("SELECT * FROM news_category WHERE id_news='{$id}'");
+        if(!isset($have_category[0])) {
+
+            $sql_add_category = "
+INSERT INTO news_category (id_category,id_news) VALUES('{$id_category}','{$id}');
+";
+            $this->db->query($sql_add_category);
+            } else {
+
+            $sql_edit_category = "
 UPDATE news_category
   SET id_category = '{$id_category}'
     WHERE id_news = '{$id}'
 ";
-        $this->db->query($sql_edit_category);
+            $this->db->query($sql_edit_category);
+        }
 
         foreach ($tag as $one_tag) {
 
@@ -413,105 +418,3 @@ SELECT *
         return $this->db->query($sql);
     }
 }
-    
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- Можно брать от сюда actions
-class News extends Model {
-
-    /**
-     * @param bool $analytical /
-     * @internal param $only_analytical /
-     * if parameter is true then return all analytical articles* if parameter is true then return all analytical articles /
-     * and return result of sql query work /
-     * @return null /
-     
-    public function getList($analytical = false)
-    {
-        $sql = "
-SELECT * 
-  FROM news";
-        if ($analytical) {
-            $sql .= "WHERE analytical = 1";
-        }
-        return $this->db->query($sql);
-    }
-
-    public function getArticleById($id)
-    {
-        // we need escape for sql injections
-        $id = $this->db->escape($id);
-        $sql = "
-SELECT * 
-  FROM news 
-    WHERE id = '{$id}' 
-      LIMIT 1";
-        return $this->runSqlQuery($sql);
-    }
-
-    public function getNewsByCategoryId($category_id)
-    {
-        $category_id = $this->db->escape($category_id);
-        $sql = "
-SELECT categories.id, categories.name, news.title
-	FROM categories 
-    	LEFT JOIN news_category 
-        	ON categories.id = news_category.id_category
-        LEFT JOIN news 
-        	ON news_category.id_news = news.id
-			WHERE categories.id = '{$category_id}'";
-        return $this->runSqlQuery($sql);
-    }
-
-    public function getNewsByTagId($tag_id)
-    {
-        $tag_id = $this->db->escpe($tag_id);
-        $sql = "
-SELECT tag.id, tag.name, news.title
-	FROM tag 
-    	LEFT JOIN news_tag 
-        	ON tag.id = news_tag.id_tag
-        LEFT JOIN news 
-        	ON news_tag.id_news = news.id
-			WHERE tag.id = '{$tag_id}'";
-        return $this->runSqlQuery($sql);
-    }
-
-    public function getNewsByTagName($tag_name)
-    {
-        $tag_name = $this->db->escpe($tag_name);
-        $sql = "
-SELECT tag.id, tag.name, news.title
-	FROM tag 
-    	LEFT JOIN news_tag 
-        	ON tag.id = news_tag.id_tag
-        LEFT JOIN news 
-        	ON news_tag.id_news = news.id
-			WHERE tag.name = '{$tag_name}'";
-        return $this->runSqlQuery($sql);
-    }
-
-    private function runSqlQuery($sql)
-    {
-        $result = $this->db->query($sql);
-        return isset($result[0]) ? $result[0] : null;
-    }
-}*/

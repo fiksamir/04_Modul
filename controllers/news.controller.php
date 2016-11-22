@@ -108,9 +108,6 @@ class NewsController extends Controller {
             $this->data['article_tags'] = $this->model->getArticleTags($id);
             $this->data['article_comments'] = $this->model->getArticleComments($id);
 
-//            echo "<pre>";
-//            print_r($this->data['article_comments']);
-//            die;
             
             $this->getCarouselData($id);
         }
@@ -125,8 +122,8 @@ class NewsController extends Controller {
 
     // actions for administrators ====================
     // index TODONE
-    // view TODO add button for add photos
-    // add TODONE
+    // view
+    //  add TODONE
 
     /**
      * admin action for showing all news /
@@ -248,10 +245,6 @@ class NewsController extends Controller {
     {
         $params = App::getRouter()->getParams();
 
-//        echo"<pre>";
-//        print_r($_POST);
-//        die;
-
         if (isset($params[0])) {
             $id = strtolower($params[0]);
             $this->data['article'] = $this->model->getByID($id);
@@ -261,13 +254,39 @@ class NewsController extends Controller {
 
             $this->getCarouselData($id);
         }
-        
-        if ( $_POST ) {
+
+        if ($_POST) {
             $result = $this->model->saveEditedArticle($_POST);
             if ($result) {
                 Session::setFlash('article was saved');
             } else {
                 Session::setFlash('Error');
+            }
+        }
+
+        $id = $this->data['article']['id'];
+        $dir_name = ROOT . DS . "webroot" . DS . "uploads" . DS . $id . DS;
+        if ($_FILES) {
+            if (file_exists($dir_name)) {
+                foreach ($_FILES['image']['error'] as $key => $error) {
+                    if (!file_exists($dir_name . DS . basename($_FILES['image']['name'][$key]))) {
+                        if ($error == UPLOAD_ERR_OK) {
+                            $temp_file_name = $_FILES['image']['tmp_name'][$key];
+                            $file_name = $dir_name . basename($_FILES['image']['name'][$key]);
+                            move_uploaded_file($temp_file_name, $file_name);
+                        }
+                    }
+                }
+            } else {
+                mkdir(ROOT . DS . "webroot" . DS . "uploads" . DS . $id); // create folder
+                foreach ($_FILES['image']['error'] as $key => $error) {
+
+                    if ($error == UPLOAD_ERR_OK) {
+                        $temp_file_name = $_FILES['image']['tmp_name'][$key];
+                        $file_name = $dir_name . basename($_FILES['image']['name'][$key]);
+                        move_uploaded_file($temp_file_name, $file_name);
+                    }
+                }
             }
         }
     }

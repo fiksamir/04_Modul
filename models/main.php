@@ -22,6 +22,46 @@ SELECT id, title
     }
 
     /**
+     * sinsert data of adv into db /
+     * @param array $data
+     * @return mixed
+     */
+    public function saveAdvBlock($data=array()) 
+    {
+        $text = $this->db->escape($data['text']);
+        $firm = $this->db->escape($data['firm']);
+        $old_price = $this->db->escape($data['old_price']);
+        $new_price = $this->db->escape($data['new_price']);
+        $site = $this->db->escape($data['site']);
+        
+        return $this->db->query("INSERT INTO advertising (text, firm, site, old_price, new_price) VALUES ('{$text}','{$firm}','{$site}','{$old_price}','{$new_price}')");
+    }
+
+    /**
+     * select titles of 4 latest news and images for them /
+     * @return mixed
+     */
+    public function getAdvBlockId()
+    {
+        $sql = "
+SELECT *
+  FROM advertising 
+    ORDER BY id DESC 
+      LIMIT 1
+";
+        return $this->db->query($sql);
+    }
+
+    public function setColor($text)
+    {
+        $color = $this->db->escape($text);
+        $sql = "
+UPDATE user SET color = '{$color}' WHERE id <> 1;
+";
+        $this->db->query($sql);
+    }
+    
+    /**
      * action for selection top 5 users with the biggest amount of comments /
      * @return mixed
      */

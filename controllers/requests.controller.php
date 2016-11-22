@@ -63,4 +63,11 @@ class RequestsController extends Controller
             $this->model->allCategories($_POST['search']);
         }
     }
+    
+    public function header_color() 
+    {
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $this->model->getColor();
+        }
+    }
 }

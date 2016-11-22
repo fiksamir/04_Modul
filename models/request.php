@@ -90,6 +90,25 @@ SELECT *
         echo $result[0]['plus'];
         exit;
     }
+    
+    public function getColor() {
+
+        $id = Session::get('id');
+        if (isset($id)) {
+            $sql = "
+SELECT * 
+  FROM user
+    WHERE id = '{$id}' LIMIT 1";
+
+            $user = $this->db->query($sql);
+
+            $user_color= $user[0]['color'];
+            echo $user_color;
+        } else {
+            echo '#000000';
+        }
+        exit;
+    }
 
 
     /**

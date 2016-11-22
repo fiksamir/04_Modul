@@ -120,9 +120,13 @@ Class CategoriesController extends Controller {
         $this->build_tree(0,0);
 
         if ($_POST) {
-            $this->model->createCategory($_POST['id_parent'],$_POST['category_name']);
+
+            if ($this->model->createCategory($_POST['id_parent'],$_POST['category_name'])) {
+                Router::redirect('/admin/categories/');
+            }
         }
         $this->data['parents-category'] = $this->model->getParentsCategories();
+
     }
 
     /**
