@@ -11,7 +11,7 @@ class Request extends Model {
      */
     public function newSearchTags($data)
     {
-        $role = (empty(Session::get('role')) ? "" : "/" . Session::get('role'));
+        $role = (Session::get('role')==null) ? " " : "/" . Session::get('role');
         $name = $this->db->escape($data);
         $sql = "
 SELECT * 
@@ -145,7 +145,7 @@ SELECT *
     category
 ";
             $result = $this->db->query($sql);
-            $role = (empty(Session::get('role')) ? "" : "/" . Session::get('role'));
+            $role = (Session::get('role')==null) ? " " : "/" . Session::get('role');
             if (!empty($result)) {
 
                 echo'<li><a href="'.$role.'/categories/">All</a></li>';

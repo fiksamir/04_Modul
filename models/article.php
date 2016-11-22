@@ -396,7 +396,7 @@ WHERE category.id NOT IN (SELECT t2.id FROM category AS t1
                                             AND news.id = '$id_news';
                                             ";
 
-        $approved = (empty($this->db->query($sql_1))) ? "" : 1;
+        $approved = ($this->db->query($sql_1)==null) ? "" : 1;
 
         $sql = "
 INSERT INTO comment (id_user,id_parent,text,id_news,approved) 

@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <table class="table">
       <?php
-      $role = (empty(Session::get('role')) ? "" : "/" . Session::get('role'));
+      $role = (Session::get('role')==null) ? "" : "/" . Session::get('role');
       $i = 0;
       ?>
       <thead>
