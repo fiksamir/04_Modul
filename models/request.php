@@ -105,7 +105,7 @@ SELECT *
             $user_color= $user[0]['color'];
             echo $user_color;
         } else {
-            echo '#000000';
+            echo '#000FFF';
         }
         exit;
     }

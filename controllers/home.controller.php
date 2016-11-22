@@ -163,9 +163,9 @@ class HomeController extends Controller {
 
             $last_adv = $this->model->getAdvBlockId(); // name of the folder
             $id = $last_adv[0]['id'];
-            mkdir(ROOT.DS."webroot".DS."img".DS."adv".DS.$id); // create folder
+            mkdir(ROOT.DS."webroot".DS."uploads".DS."adv".$id); // create folder
 
-            $dir_name = ROOT.DS."webroot".DS."img".DS."adv".DS.$id.DS;
+            $dir_name = ROOT.DS."webroot".DS."uploads".DS."adv".$id.DS;
 
             if ($_FILES) {
                 foreach ($_FILES['image']['error'] as $key => $error) {
@@ -180,7 +180,7 @@ class HomeController extends Controller {
             }
         }
         if(isset($_POST['bgi'])) {
-            $dir_name = ROOT . DS . "webroot" . DS . "img" . DS . "bgi" . DS;
+            $dir_name = ROOT . DS . "webroot" . DS . "uploads" . DS . "bgi" . DS;
             $files = glob($dir_name."*");
             if (count($files) > 0) {
                 foreach ($files as $file) {

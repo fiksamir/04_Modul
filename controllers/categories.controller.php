@@ -260,4 +260,14 @@ Class CategoriesController extends Controller {
         $this->data['adv_left'] = array_slice($this->data['adv'],0,4);
         $this->data['adv_right'] = array_slice($this->data['adv'],3,4);
     }
+    
+    public function admin_political()
+    {
+        if ($_POST) {
+            $this->model->editComment($_POST);
+        }
+        $this->data['all_comments'] = $this->model->getPoliticComments();
+    }
+    
+    
 }

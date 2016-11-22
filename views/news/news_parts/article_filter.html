@@ -34,7 +34,7 @@
         } ?>
 
         <input type="submit" class="btn btn-success" value="Set filter"/>
-        <?php $role = (empty(Session::get('role')))?"":"/".Session::get('role');?>
+        <?php $role = (Session::get('role')==null)?"":"/".Session::get('role');?>
         <input type="button" class="btn" value="Reset filter" onclick='location.href="<?=$role?>/news/?"'>
     </form>
 </div>

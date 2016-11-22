@@ -120,4 +120,32 @@ INSERT INTO category(id_parent,name)
 ";
         $this->db->query($sql);
     }
+
+    public function editComment($data = array())
+    {
+        $id = $this->db->escape($data['id']);
+        $text = $this->db->escape($data['text']);
+
+        $approved = (array_key_exists('approved',$data)) ? 1 : 0;
+
+        if ($approved) {
+            $sql = "
+UPDATE comment SET text='{$text}',approved={$approved} WHERE id='{$id}'
+";
+            $this->db->query($sql);
+        } else {
+            $sql = "
+UPDATE comment SET text='{$text}' WHERE id='{$id}'
+";
+            $this->db->query($sql);
+        }
+    }
+    
+    public function getPoliticComments() 
+    {
+        $sql = "
+SELECT * FROM comment WHERE approved IS NULL ORDER BY create_date_time
+";
+        return $this->db->query($sql);
+    }
 }
